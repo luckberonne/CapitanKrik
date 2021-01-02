@@ -130,5 +130,8 @@
     <Resource Include="ScreenShots\Screen0.png" />
     <Resource Include="ScreenShots\Screen1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ScreenShots\Screen2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
