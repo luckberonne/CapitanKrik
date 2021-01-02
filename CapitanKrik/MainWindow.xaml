@@ -288,6 +288,19 @@
                                 <CheckBox Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" >Salida</CheckBox>
 
                             </Grid>
+                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                                <TextBox TextWrapping="Wrap" Margin="25,0,25,100" Background="{x:Null}" Foreground="White">
+                                    <TextBox.Text>
+                                        erdfg
+                                    </TextBox.Text>
+                                    <TextBox.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+
+                            </Grid>
                         </Grid>
                     </TabItem>
 
