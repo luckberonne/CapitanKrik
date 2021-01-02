@@ -69,5 +69,40 @@ namespace CapitanKrik
         {
             Close();
         }
+
+
+        public List<Archivos> ListArchivos { get; set; } = ItemsArchivos.GetTodoItems();
+        
+    }
+
+    public class ItemsArchivos
+    {
+        public List<Archivos> MYLIST { get; set; } = GetTodoItems();
+        public static List<Archivos> GetTodoItems()
+        {
+            var ListArchivos = new List<Archivos>();
+            ListArchivos.Add(new Archivos() { nombreArchivo = "FACTA_QUILMES_LANONIMA_00060760.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_QUILMES_LANONIMA_00007699.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_00000213.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_06789089.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_PEPSICO_LANONIMA_00000358.txt" });
+
+
+            return ListArchivos;
+        }
+    }
+
+    public class Archivos
+    {
+        public string nombreArchivo { get; set; }
+        public string tipoDocumento { get; set; }
+        public string emisor { get; set; }
+        public string receptor { get; set; }
+        public string numeroDocumento { get; set; }
+
+        public override string ToString()
+        {
+            return this.nombreArchivo;
+        }
     }
 }

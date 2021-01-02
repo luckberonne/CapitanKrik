@@ -100,7 +100,11 @@
         </Style>
 
 
-
+        <Style x:Key="tb_text" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
 
         <Style x:Key="tb_style" TargetType="{x:Type ToggleButton}">
 
@@ -155,6 +159,10 @@
 
     </Window.Resources>
 
+    <Window.DataContext>
+        <Binding RelativeSource="{RelativeSource Self}"/>
+    </Window.DataContext>
+
     <Grid>
 
         <!--// Background Color //-->
@@ -177,9 +185,17 @@
 
 
             <Grid Margin="70,10,10,10" >
-                <ListBox Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" ItemsSource="{Binding ItemsArchivos}"/>
+                <ListBox x:Name="ListArch" Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" SelectionMode="Multiple" ItemsSource="{Binding ListArchivos}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource tb_text}" Text="{Binding nombreArchivo}">
+                                
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
-            <!--// Navigation Panel //-->
+            <!--// Panel de navegacion //-->
 
             <Grid   x:Name="nav_pnl"
                     HorizontalAlignment="Left"
@@ -192,7 +208,7 @@
 
                 <StackPanel x:Name="st_pnl" Grid.Row="0">
 
-                    <!--// Grid for the Menu Toggle Button //-->
+                    <!--// Grid  //-->
 
                     <Grid Height="90">
 
