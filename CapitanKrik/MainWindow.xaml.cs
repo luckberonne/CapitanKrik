@@ -19,6 +19,7 @@ namespace CapitanKrik
 
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -124,6 +125,7 @@ namespace CapitanKrik
                 this.WindowState = (this.WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
             }
         }
+
     }
 
     public class ItemsArchivos
