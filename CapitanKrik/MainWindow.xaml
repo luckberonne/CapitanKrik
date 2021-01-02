@@ -106,6 +106,14 @@
             <Setter Property="FontSize" Value="16" />
         </Style>
 
+
+
+        <Style x:Key="tb_textlog" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+
         <Style x:Key="tb_style" TargetType="{x:Type ToggleButton}">
 
             <Setter Property="Template">
@@ -185,15 +193,40 @@
 
 
             <Grid Margin="70,10,10,10" >
-                <ListBox x:Name="ListArch" Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" SelectionMode="Multiple" ItemsSource="{Binding ListArchivos}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Style="{StaticResource tb_text}" Text="{Binding nombreArchivo}">
-                                
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <TabControl x:Name="TABS" Background="{x:Null}">
+                    <TabItem x:Name="TabAchivos">
+                        <ListBox x:Name="ListArch" Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" SelectionMode="Multiple" ItemsSource="{Binding ListArchivos}" BorderBrush="{x:Null}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource tb_text}" Text="{Binding nombreArchivo}">
+
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </TabItem>
+
+                    <TabItem x:Name="TabLog">
+                        <TextBlock Style="{StaticResource tb_textlog}">
+                            
+                            ERROR - No se encontro el tipo de documento para el archivo bfdgbhd (1).cen
+                            
+                        </TextBlock>
+                    </TabItem>
+
+
+                    <TabItem x:Name="TabConfig">
+                        <TextBlock Style="{StaticResource tb_text}" Text="chau">
+
+                        </TextBlock>
+                    </TabItem>
+
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Style>
+                    </TabControl.ItemContainerStyle>
+                </TabControl>
             </Grid>
             <!--// Panel de navegacion //-->
 
@@ -212,7 +245,7 @@
 
                     <Grid Height="90">
 
-                        <!--// Menu title text //-->
+                        <!--// Menu //-->
 
                         <TextBlock  Grid.Row="1"
                                     Grid.Column="0"
@@ -448,7 +481,7 @@
 
                         <ListViewItem HorizontalAlignment="Left"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
-                                      >
+                                      MouseDoubleClick="ListViewItem_MouseDoubleClick_1">
 
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
@@ -479,7 +512,7 @@
 
                         <ListViewItem HorizontalAlignment="Left"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
-                                      >
+                                      MouseDoubleClick="ListViewItem_MouseDoubleClick">
 
                             <StackPanel Orientation="Horizontal"
                                         Width="230">

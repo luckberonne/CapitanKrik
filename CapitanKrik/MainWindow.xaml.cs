@@ -72,7 +72,32 @@ namespace CapitanKrik
 
 
         public List<Archivos> ListArchivos { get; set; } = ItemsArchivos.GetTodoItems();
-        
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            switch (TABS.SelectedIndex)
+            {
+                case 0:
+                    TABS.SelectedIndex = 1;
+                    break;
+                default:
+                    TABS.SelectedIndex = 0;
+                    break;
+            }
+        }
+
+        private void ListViewItem_MouseDoubleClick_1(object sender, MouseButtonEventArgs e)
+        {
+            switch (TABS.SelectedIndex)
+            {
+                case 0:
+                    TABS.SelectedIndex = 2;
+                    break;
+                default:
+                    TABS.SelectedIndex = 0;
+                    break;
+            }
+        }
     }
 
     public class ItemsArchivos
@@ -86,7 +111,11 @@ namespace CapitanKrik
             ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_00000213.txt" });
             ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_06789089.txt" });
             ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_PEPSICO_LANONIMA_00000358.txt" });
-
+            ListArchivos.Add(new Archivos() { nombreArchivo = "FACTA_QUILMES_LANONIMA_00060760.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_QUILMES_LANONIMA_00007699.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_00000213.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_06789089.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_PEPSICO_LANONIMA_00000358.txt" });
 
             return ListArchivos;
         }
