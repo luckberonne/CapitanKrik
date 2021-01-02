@@ -8,6 +8,9 @@
         Title="CapitanKrik" 
         Height="600" 
         Width="500"
+        ResizeMode="NoResize"
+        Topmost="True"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen" Icon="ancla.png">
 
     <Window.Resources>
@@ -233,7 +236,7 @@
             <Grid   x:Name="nav_pnl"
                     HorizontalAlignment="Left"
                     Width="65"
-                    Background="#2E333A">
+                    Background="#2E333A" MouseLeftButtonDown="nav_pnl_MouseLeftButtonDown" MouseRightButtonDown="nav_pnl_MouseRightButtonDown" MouseDown="nav_pnl_MouseDown">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="80"/>

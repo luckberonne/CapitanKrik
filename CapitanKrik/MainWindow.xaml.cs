@@ -24,6 +24,7 @@ namespace CapitanKrik
             InitializeComponent();
         }
 
+
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
             // Set tooltip visibility
@@ -80,6 +81,9 @@ namespace CapitanKrik
                 case 0:
                     TABS.SelectedIndex = 1;
                     break;
+                case 2:
+                    TABS.SelectedIndex = 1;
+                    break;
                 default:
                     TABS.SelectedIndex = 0;
                     break;
@@ -93,9 +97,31 @@ namespace CapitanKrik
                 case 0:
                     TABS.SelectedIndex = 2;
                     break;
+                case 1:
+                    TABS.SelectedIndex = 2;
+                    break;
                 default:
                     TABS.SelectedIndex = 0;
                     break;
+            }
+        }
+
+        private void nav_pnl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            this.DragMove();
+        }
+
+        private void nav_pnl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+                this.WindowState = WindowState.Minimized;
+        }
+
+        private void nav_pnl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                this.WindowState = (this.WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
             }
         }
     }
