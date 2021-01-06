@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FireSharp.Config;
+using FireSharp;
 
 namespace CapitanKrik
 {
@@ -20,9 +22,20 @@ namespace CapitanKrik
     public partial class MainWindow : Window
     {
 
+
+        FirebaseConfig config = new FirebaseConfig
+        {
+            AuthSecret = "V8sNL603DXhgawQHJhhCHkvvAqAK9KEvWnWAeZRt",
+            BasePath = "https://capitankrik-default-rtdb.firebaseio.com/"
+
+        };
+
+        FirebaseClient cliente = null;
+
         public MainWindow()
         {
             InitializeComponent();
+            cliente = new FirebaseClient(config);
         }
 
 
@@ -126,6 +139,26 @@ namespace CapitanKrik
             }
         }
 
+
+        private async void CSubida_LostFocus(object sender, RoutedEventArgs e)
+        {
+            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+        }
+
+        private async void CBackup_LostFocus(object sender, RoutedEventArgs e)
+        {
+            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+        }
+
+        private async void Entrada_Click(object sender, RoutedEventArgs e)
+        {
+            await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+        }
+
+        private async void Salida_Click(object sender, RoutedEventArgs e)
+        {
+            await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+        }
     }
 
     public class ItemsArchivos
@@ -161,5 +194,13 @@ namespace CapitanKrik
         {
             return this.nombreArchivo;
         }
+    }
+
+    public class Configuracion
+    {
+        public bool entrada { get; set; }
+        public bool salida { get; set; }
+        public string subida { get; set; }
+        public string backups { get; set; }
     }
 }

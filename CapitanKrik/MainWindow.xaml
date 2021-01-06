@@ -287,9 +287,9 @@
                                 Procesos
                             </Label>
 
-                            <CheckBox Grid.Row="0" Grid.Column="0" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" Margin="0,25,0,0" >Entrada</CheckBox>
+                            <CheckBox x:Name="Entrada" Grid.Row="0" Click="Entrada_Click" Grid.Column="0" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" Margin="0,25,0,0" >Entrada</CheckBox>
 
-                            <CheckBox Grid.Row="0" Grid.Column="1" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" Margin="0,25,0,0" >Salida</CheckBox>
+                            <CheckBox x:Name="Salida" Grid.Row="0" Click="Salida_Click" Grid.Column="1" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" Margin="0,25,0,0" >Salida</CheckBox>
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
                                 <Grid.RowDefinitions>
@@ -300,17 +300,14 @@
                                     Carpeta de Subida
                                 </Label>
 
-                                <TextBox  Grid.Row="1" TextWrapping="Wrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
-                                    <TextBox.Text>
-                                        C:\Users\My-PC\Pictures\Screenshots
-                                    </TextBox.Text>
+                                <TextBox x:Name="CSubida" Text="xwdx dk" LostFocus="CSubida_LostFocus" Grid.Row="1" TextWrapping="Wrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
+                            
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
                                         </Style>
                                     </TextBox.Resources>
                                 </TextBox>
-
                             </Grid>
 
                             <Grid Grid.Row="2" Grid.ColumnSpan="2">
@@ -322,7 +319,7 @@
                                     Carpeta de BackUPs
                                 </Label>
 
-                                <TextBox  Grid.Row="2" TextWrapping="Wrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
+                                <TextBox x:Name="CBackup" LostFocus="CBackup_LostFocus" Grid.Row="2" TextWrapping="Wrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
                                     <TextBox.Text>
                                         C:\Users\My-PC\Pictures\Screenshots
                                     </TextBox.Text>
