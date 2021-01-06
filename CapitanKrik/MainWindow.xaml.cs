@@ -14,7 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FireSharp.Config;
+using FireSharp.Response;
 using FireSharp;
+using Microsoft.Win32;
 
 namespace CapitanKrik
 {
@@ -36,6 +38,7 @@ namespace CapitanKrik
         {
             InitializeComponent();
             cliente = new FirebaseClient(config);
+            GetConfig();
         }
 
 
@@ -128,7 +131,7 @@ namespace CapitanKrik
 
         private void nav_pnl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-                this.WindowState = WindowState.Minimized;
+            this.WindowState = WindowState.Minimized;
         }
 
         private void nav_pnl_MouseDown(object sender, MouseButtonEventArgs e)
@@ -140,14 +143,28 @@ namespace CapitanKrik
         }
 
 
-        private async void CSubida_LostFocus(object sender, RoutedEventArgs e)
+        private async void CSubida_GotFocus(object sender, RoutedEventArgs e)
         {
-            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+            var ofd = new System.Windows.Forms.FolderBrowserDialog();
+            var result = ofd.ShowDialog();
+            if (ofd.SelectedPath.Length > 0)
+            {
+                CSubida.Text = ofd.SelectedPath;
+                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+            }
+            TABS.Focus();
         }
 
-        private async void CBackup_LostFocus(object sender, RoutedEventArgs e)
+        private async void CBackup_GotFocus(object sender, RoutedEventArgs e)
         {
-            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+            var ofd = new System.Windows.Forms.FolderBrowserDialog();
+            var result = ofd.ShowDialog();
+            if(ofd.SelectedPath.Length > 0)
+            {
+                CBackup.Text = ofd.SelectedPath;
+                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+            }
+            TABS.Focus();
         }
 
         private async void Entrada_Click(object sender, RoutedEventArgs e)
@@ -158,6 +175,67 @@ namespace CapitanKrik
         private async void Salida_Click(object sender, RoutedEventArgs e)
         {
             await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+        }
+
+        private async void GetConfig()
+        {
+            FirebaseResponse response = await cliente.GetAsync(Environment.UserName + "/Configuracion");
+            Configuracion con = response.ResultAs<Configuracion>();
+
+            if (con != null)
+            {
+                if (con.CarpetaSubida != "null")
+                {
+                    CSubida.Text = con.CarpetaSubida;
+                }
+                else
+                {
+                    CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
+                    await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                }
+
+                if (con.CarpetaBackUP != "null")
+                {
+                    CBackup.Text = con.CarpetaBackUP;
+                }
+                else
+                {
+                    CBackup.Text = "C:\\Users\\My - PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
+                    await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                }
+
+                response = await cliente.GetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada");
+                if (response.Body != "null")
+                {
+                    Entrada.IsChecked = con.ProcesoEntrada;
+                }
+                else
+                {
+                    Entrada.IsChecked = true;
+                    await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+                }
+                response = await cliente.GetAsync(Environment.UserName + "/Configuracion/ProcesoSalida");
+                if (response.Body != "null")
+                {
+                    Salida.IsChecked = con.ProcesoSalida;
+                }
+                else
+                {
+                    Salida.IsChecked = true;
+                    await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+                }
+            }
+            else
+            {
+                CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
+                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                CBackup.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
+                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                Entrada.IsChecked = true;
+                await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+                Salida.IsChecked = true;
+                await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+            }
         }
     }
 
@@ -198,9 +276,9 @@ namespace CapitanKrik
 
     public class Configuracion
     {
-        public bool entrada { get; set; }
-        public bool salida { get; set; }
-        public string subida { get; set; }
-        public string backups { get; set; }
+        public bool ProcesoEntrada { get; set; }
+        public bool ProcesoSalida { get; set; }
+        public string CarpetaSubida { get; set; }
+        public string CarpetaBackUP { get; set; }
     }
 }

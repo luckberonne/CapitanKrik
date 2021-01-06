@@ -300,8 +300,10 @@
                                     Carpeta de Subida
                                 </Label>
 
-                                <TextBox x:Name="CSubida" Text="xwdx dk" LostFocus="CSubida_LostFocus" Grid.Row="1" TextWrapping="Wrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
-                            
+                                <TextBox x:Name="CSubida" AcceptsReturn="False" GotFocus="CSubida_GotFocus" Grid.Row="1" TextWrapping="NoWrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
+                                    <TextBox.Text>
+                                        C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos
+                                    </TextBox.Text>
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -319,9 +321,9 @@
                                     Carpeta de BackUPs
                                 </Label>
 
-                                <TextBox x:Name="CBackup" LostFocus="CBackup_LostFocus" Grid.Row="2" TextWrapping="Wrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
+                                <TextBox x:Name="CBackup" AcceptsReturn="False" GotFocus="CBackup_GotFocus" Grid.Row="2" TextWrapping="NoWrap" Margin="25,0,25,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
                                     <TextBox.Text>
-                                        C:\Users\My-PC\Pictures\Screenshots
+                                        "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS"
                                     </TextBox.Text>
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
