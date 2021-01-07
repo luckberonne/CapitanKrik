@@ -237,6 +237,26 @@ namespace CapitanKrik
                 await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
             }
         }
+
+        private async void CBackup_LostFocus(object sender, RoutedEventArgs e)
+        {
+            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+        }
+
+        private async void CSubida_LostFocus(object sender, RoutedEventArgs e)
+        {
+            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+
+        }
+
+        private void CSubida_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                TABS.Focus();
+                e.Handled = true;
+            }
+        }
     }
 
     public class ItemsArchivos
