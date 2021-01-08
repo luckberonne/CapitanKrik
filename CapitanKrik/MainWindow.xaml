@@ -376,7 +376,7 @@
             <Grid   x:Name="nav_pnl"
                     HorizontalAlignment="Left"
                     Width="65"
-                    Background="#2E333A" MouseLeftButtonDown="nav_pnl_MouseLeftButtonDown" MouseRightButtonDown="nav_pnl_MouseRightButtonDown" MouseDown="nav_pnl_MouseDown">
+                    Background="#2E333A" MouseLeftButtonDown="Nav_pnl_MouseLeftButtonDown" MouseRightButtonDown="Nav_pnl_MouseRightButtonDown" MouseDown="Nav_pnl_MouseDown">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="80"/>
