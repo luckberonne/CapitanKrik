@@ -82,7 +82,7 @@ namespace CapitanKrik
 
         public List<Archivos> ListArchivos { get; set; } = ItemsArchivos.GetTodoItems();
 
-        public List<Log> ListLogs { get; set; } = ItemsLogs.gett();
+        public List<Logs.Log> ListLogs { get; set; } = Logs.GetLogs();
 
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -117,18 +117,18 @@ namespace CapitanKrik
             }
         }
 
-        private void nav_pnl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Nav_pnl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             this.DragMove();
         }
 
-        private void nav_pnl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void Nav_pnl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
         }
 
-        private void nav_pnl_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Nav_pnl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
@@ -140,11 +140,11 @@ namespace CapitanKrik
         private async void CSubida_GotFocus(object sender, RoutedEventArgs e)
         {
             var ofd = new System.Windows.Forms.FolderBrowserDialog();
-            var result = ofd.ShowDialog();
+            ofd.ShowDialog();
             if (ofd.SelectedPath.Length > 0)
             {
                 CSubida.Text = ofd.SelectedPath;
-                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
             }
             TABS.Focus();
         }
@@ -152,28 +152,28 @@ namespace CapitanKrik
         private async void CBackup_GotFocus(object sender, RoutedEventArgs e)
         {
             var ofd = new System.Windows.Forms.FolderBrowserDialog();
-            var result = ofd.ShowDialog();
+            ofd.ShowDialog();
             if(ofd.SelectedPath.Length > 0)
             {
                 CBackup.Text = ofd.SelectedPath;
-                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
             }
             TABS.Focus();
         }
 
         private async void Entrada_Click(object sender, RoutedEventArgs e)
         {
-            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
         }
 
         private async void Salida_Click(object sender, RoutedEventArgs e)
         {
-            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
         }
 
         private async void GetConfig()
         {
-            FirebaseResponse response = await conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
+            FirebaseResponse response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
             Configuracion con = response.ResultAs<Configuracion>();
 
             if (con != null)
@@ -185,7 +185,7 @@ namespace CapitanKrik
                 else
                 {
                     CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
-                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
                 }
 
                 if (con.CarpetaBackUP != "null")
@@ -195,10 +195,10 @@ namespace CapitanKrik
                 else
                 {
                     CBackup.Text = "C:\\Users\\My - PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
-                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
                 }
 
-                response = await conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada");
+                response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada");
                 if (response.Body != "null")
                 {
                     Entrada.IsChecked = con.ProcesoEntrada;
@@ -206,9 +206,9 @@ namespace CapitanKrik
                 else
                 {
                     Entrada.IsChecked = true;
-                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
                 }
-                response = await conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoSalida");
+                response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoSalida");
                 if (response.Body != "null")
                 {
                     Salida.IsChecked = con.ProcesoSalida;
@@ -216,31 +216,31 @@ namespace CapitanKrik
                 else
                 {
                     Salida.IsChecked = true;
-                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
                 }
             }
             else
             {
                 CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
-                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
                 CBackup.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
-                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
                 Entrada.IsChecked = true;
-                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
                 Salida.IsChecked = true;
-                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
             }
 
         }
 
         private async void CBackup_LostFocus(object sender, RoutedEventArgs e)
         {
-            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
         }
 
         private async void CSubida_LostFocus(object sender, RoutedEventArgs e)
         {
-            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
 
         }
 
@@ -256,44 +256,6 @@ namespace CapitanKrik
    
     }
 
-    public class conexion
-    {
-        public static FirebaseClient Cont(){
-            FirebaseConfig config = new FirebaseConfig
-            {
-                AuthSecret = "V8sNL603DXhgawQHJhhCHkvvAqAK9KEvWnWAeZRt",
-                BasePath = "https://capitankrik-default-rtdb.firebaseio.com/"
-
-            };
-
-            FirebaseClient cliente = new FirebaseClient(config);
-            return cliente;
-        }
-    }
-
-    public class ItemsLogs
-    {
-        public static List<Log> ListLogs = new List<Log>();
-
-        public static async void GetLogItems()
-        {
-            FirebaseResponse responsed = await conexion.Cont().GetAsync(Environment.UserName + "/Logs");
-            var conf = responsed.ResultAs<Dictionary<string, Log>>();
-            foreach (var item in conf)
-            {
-                ListLogs.Add(new Log() { Mensaje = item.Value.ToString() });
-
-            }
-
-        }
-
-        public static List<Log> gett()
-        {
-            GetLogItems();
-            return ListLogs;
-        }
-
-    }
 
     public class ItemsArchivos
     {
@@ -330,16 +292,6 @@ namespace CapitanKrik
         }
     }
 
-    public class Log
-    {
-        public string TipoLog { get; set; }
-        public string Mensaje { get; set; }
-
-        public override string ToString()
-        {
-            return this.TipoLog + "-" + this.Mensaje;
-        }
-    }
 
     public class Configuracion
     {
