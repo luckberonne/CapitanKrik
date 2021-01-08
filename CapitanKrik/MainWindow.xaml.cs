@@ -25,19 +25,10 @@ namespace CapitanKrik
     {
 
 
-        FirebaseConfig config = new FirebaseConfig
-        {
-            AuthSecret = "V8sNL603DXhgawQHJhhCHkvvAqAK9KEvWnWAeZRt",
-            BasePath = "https://capitankrik-default-rtdb.firebaseio.com/"
-
-        };
-
-        FirebaseClient cliente = null;
 
         public MainWindow()
         {
             InitializeComponent();
-            cliente = new FirebaseClient(config);
             GetConfig();
         }
 
@@ -90,6 +81,9 @@ namespace CapitanKrik
 
 
         public List<Archivos> ListArchivos { get; set; } = ItemsArchivos.GetTodoItems();
+
+        public List<Log> ListLogs { get; set; } = ItemsLogs.gett();
+
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -150,7 +144,7 @@ namespace CapitanKrik
             if (ofd.SelectedPath.Length > 0)
             {
                 CSubida.Text = ofd.SelectedPath;
-                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
             }
             TABS.Focus();
         }
@@ -162,24 +156,24 @@ namespace CapitanKrik
             if(ofd.SelectedPath.Length > 0)
             {
                 CBackup.Text = ofd.SelectedPath;
-                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
             }
             TABS.Focus();
         }
 
         private async void Entrada_Click(object sender, RoutedEventArgs e)
         {
-            await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
         }
 
         private async void Salida_Click(object sender, RoutedEventArgs e)
         {
-            await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
         }
 
         private async void GetConfig()
         {
-            FirebaseResponse response = await cliente.GetAsync(Environment.UserName + "/Configuracion");
+            FirebaseResponse response = await conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
             Configuracion con = response.ResultAs<Configuracion>();
 
             if (con != null)
@@ -191,7 +185,7 @@ namespace CapitanKrik
                 else
                 {
                     CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
-                    await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
                 }
 
                 if (con.CarpetaBackUP != "null")
@@ -201,10 +195,10 @@ namespace CapitanKrik
                 else
                 {
                     CBackup.Text = "C:\\Users\\My - PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
-                    await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
                 }
 
-                response = await cliente.GetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada");
+                response = await conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada");
                 if (response.Body != "null")
                 {
                     Entrada.IsChecked = con.ProcesoEntrada;
@@ -212,9 +206,9 @@ namespace CapitanKrik
                 else
                 {
                     Entrada.IsChecked = true;
-                    await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
                 }
-                response = await cliente.GetAsync(Environment.UserName + "/Configuracion/ProcesoSalida");
+                response = await conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoSalida");
                 if (response.Body != "null")
                 {
                     Salida.IsChecked = con.ProcesoSalida;
@@ -222,30 +216,31 @@ namespace CapitanKrik
                 else
                 {
                     Salida.IsChecked = true;
-                    await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+                    await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
                 }
             }
             else
             {
                 CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
-                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
                 CBackup.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
-                await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
                 Entrada.IsChecked = true;
-                await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
                 Salida.IsChecked = true;
-                await cliente.SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+                await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
             }
+
         }
 
         private async void CBackup_LostFocus(object sender, RoutedEventArgs e)
         {
-            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
         }
 
         private async void CSubida_LostFocus(object sender, RoutedEventArgs e)
         {
-            await cliente.SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+            await conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
 
         }
 
@@ -257,15 +252,56 @@ namespace CapitanKrik
                 e.Handled = true;
             }
         }
+
+   
+    }
+
+    public class conexion
+    {
+        public static FirebaseClient Cont(){
+            FirebaseConfig config = new FirebaseConfig
+            {
+                AuthSecret = "V8sNL603DXhgawQHJhhCHkvvAqAK9KEvWnWAeZRt",
+                BasePath = "https://capitankrik-default-rtdb.firebaseio.com/"
+
+            };
+
+            FirebaseClient cliente = new FirebaseClient(config);
+            return cliente;
+        }
+    }
+
+    public class ItemsLogs
+    {
+        public static List<Log> ListLogs = new List<Log>();
+
+        public static async void GetLogItems()
+        {
+            FirebaseResponse responsed = await conexion.Cont().GetAsync(Environment.UserName + "/Logs");
+            var conf = responsed.ResultAs<Dictionary<string, Log>>();
+            foreach (var item in conf)
+            {
+                ListLogs.Add(new Log() { Mensaje = item.Value.ToString() });
+
+            }
+
+        }
+
+        public static List<Log> gett()
+        {
+            GetLogItems();
+            return ListLogs;
+        }
+
     }
 
     public class ItemsArchivos
     {
-        public List<Archivos> MYLIST { get; set; } = GetTodoItems();
+        public List<Archivos> ListArchivos { get; set; } = GetTodoItems();
         public static List<Archivos> GetTodoItems()
         {
             var ListArchivos = new List<Archivos>();
-            ListArchivos.Add(new Archivos() { nombreArchivo = "FACTA_QUILMES_LANONIMA_00060760.txt" });
+            ListArchivos.Add(new Archivos() { nombreArchivo = "FACTA_QUILMES_LANONIMA_00060760.txt", emisor = "jor" });
             ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_QUILMES_LANONIMA_00007699.txt" });
             ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_00000213.txt" });
             ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_06789089.txt" });
@@ -291,6 +327,17 @@ namespace CapitanKrik
         public override string ToString()
         {
             return this.nombreArchivo;
+        }
+    }
+
+    public class Log
+    {
+        public string TipoLog { get; set; }
+        public string Mensaje { get; set; }
+
+        public override string ToString()
+        {
+            return this.TipoLog + "-" + this.Mensaje;
         }
     }
 

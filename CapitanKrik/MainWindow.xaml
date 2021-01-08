@@ -259,15 +259,15 @@
                     </TabItem>
 
                     <TabItem x:Name="TabLog" Background="{x:Null}">
-                        <ListView Background="{x:Null}" BorderBrush="{x:Null}">
-                            <ListView.ItemTemplate>
+                        <ListBox x:Name="ListLog" Background="{x:Null}"  ItemsSource="{Binding ListLogs}" BorderBrush="{x:Null}">
+                            <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Style="{StaticResource tb_text}" Text="{Binding nombreArchivo}">
+                                    <TextBlock Style="{StaticResource tb_text}" Text="{Binding Mensaje}">
 
                                     </TextBlock>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </TabItem>
 
 
