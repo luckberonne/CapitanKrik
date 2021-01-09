@@ -36,11 +36,29 @@ namespace CapitanKrik
             foreach (var item in conf)
             {
                 ListLogs.Add(new Log() { Mensaje = item.Value.ToString() });
-
             }
 
             return ListLogs;
 
+        }
+
+        public static async void SetLog(Log save)
+        {
+            FirebaseResponse responsed = await Conexion.Cont().GetAsync(Environment.UserName + "/Logs");
+            var conf = responsed.ResultAs<Dictionary<string, Log>>();
+            int temp = 0;
+            foreach (var item in conf)
+            {
+                if (Int32.Parse(item.Key.Substring(3)) > temp)
+                {
+                    temp = Int32.Parse(item.Key.Substring(3));
+                }
+
+            }
+            temp++;
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Logs/Log" + temp + "/TipoLog", save.TipoLog);
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Logs/Log" + temp + "/Mensaje", save.Mensaje);
+            MainWindow.AddLogList(save);
         }
     }
 }

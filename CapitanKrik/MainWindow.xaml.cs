@@ -30,6 +30,11 @@ namespace CapitanKrik
         {
             InitializeComponent();
             GetConfig();
+
+            Logs.Log eslog = new Logs.Log();
+            eslog.TipoLog = "ERROR";
+            eslog.Mensaje = "Mensaje de ";
+            Logs.SetLog(eslog);
         }
 
 
@@ -83,7 +88,12 @@ namespace CapitanKrik
         public List<Archivos.Archivo> ListArchivos { get; set; } = Task.Run(() => Archivos.GetListArchivos()).Result;
 
 
-        public List<Logs.Log> ListLogs { get; set; } = Task.Run(() => Logs.GetLogItems()).Result;
+        public static List<Logs.Log> ListLogs { get; set; } = Task.Run(() => Logs.GetLogItems()).Result;
+
+        public static void AddLogList(Logs.Log eslog)
+        {
+            ListLogs.Add(new Logs.Log() { Mensaje = eslog.ToString() });
+        }
 
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
