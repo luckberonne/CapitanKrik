@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace CapitanKrik
 {
-    class Class1
+    class Configuracion
     {
+        public class Confg
+        {
+            public bool ProcesoEntrada { get; set; }
+            public bool ProcesoSalida { get; set; }
+            public string CarpetaSubida { get; set; }
+            public string CarpetaBackUP { get; set; }
+        }
     }
 }

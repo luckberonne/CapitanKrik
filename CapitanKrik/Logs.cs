@@ -25,10 +25,12 @@ namespace CapitanKrik
         }
 
 
-        public static List<Log> ListLogs = new List<Log>();
 
-        public static async void GetLogItems()
+
+
+        public static async Task<List<Log>> GetLogItems()
         {
+            List<Log> ListLogs = new List<Log>();
             FirebaseResponse responsed = await Conexion.Cont().GetAsync(Environment.UserName + "/Logs");
             var conf = responsed.ResultAs<Dictionary<string, Log>>();
             foreach (var item in conf)
@@ -37,13 +39,8 @@ namespace CapitanKrik
 
             }
 
-        }
-
-        public static List<Log> GetLogs()
-        {
-            GetLogItems();
             return ListLogs;
-        }
 
+        }
     }
 }

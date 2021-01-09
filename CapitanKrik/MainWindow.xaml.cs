@@ -80,9 +80,10 @@ namespace CapitanKrik
         }
 
 
-        public List<Archivos> ListArchivos { get; set; } = ItemsArchivos.GetTodoItems();
+        public List<Archivos.Archivo> ListArchivos { get; set; } = Task.Run(() => Archivos.GetListArchivos()).Result;
 
-        public List<Logs.Log> ListLogs { get; set; } = Logs.GetLogs();
+
+        public List<Logs.Log> ListLogs { get; set; } = Task.Run(() => Logs.GetLogItems()).Result;
 
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -174,7 +175,7 @@ namespace CapitanKrik
         private async void GetConfig()
         {
             FirebaseResponse response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
-            Configuracion con = response.ResultAs<Configuracion>();
+            Configuracion.Confg con = response.ResultAs<Configuracion.Confg>();
 
             if (con != null)
             {
@@ -257,47 +258,6 @@ namespace CapitanKrik
     }
 
 
-    public class ItemsArchivos
-    {
-        public List<Archivos> ListArchivos { get; set; } = GetTodoItems();
-        public static List<Archivos> GetTodoItems()
-        {
-            var ListArchivos = new List<Archivos>();
-            ListArchivos.Add(new Archivos() { nombreArchivo = "FACTA_QUILMES_LANONIMA_00060760.txt", emisor = "jor" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_QUILMES_LANONIMA_00007699.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_00000213.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_06789089.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_PEPSICO_LANONIMA_00000358.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "FACTA_QUILMES_LANONIMA_00060760.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_QUILMES_LANONIMA_00007699.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_00000213.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NDEBA_ANDINAARG_LANONIMA_06789089.txt" });
-            ListArchivos.Add(new Archivos() { nombreArchivo = "NCREA_PEPSICO_LANONIMA_00000358.txt" });
-
-            return ListArchivos;
-        }
-    }
-
-    public class Archivos
-    {
-        public string nombreArchivo { get; set; }
-        public string tipoDocumento { get; set; }
-        public string emisor { get; set; }
-        public string receptor { get; set; }
-        public string numeroDocumento { get; set; }
-
-        public override string ToString()
-        {
-            return this.nombreArchivo;
-        }
-    }
 
 
-    public class Configuracion
-    {
-        public bool ProcesoEntrada { get; set; }
-        public bool ProcesoSalida { get; set; }
-        public string CarpetaSubida { get; set; }
-        public string CarpetaBackUP { get; set; }
-    }
 }
