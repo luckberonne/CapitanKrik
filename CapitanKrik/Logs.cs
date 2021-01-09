@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using FireSharp.Config;
 using FireSharp.Response;
 using FireSharp;
@@ -31,12 +30,15 @@ namespace CapitanKrik
         public static async Task<List<Log>> GetLogItems()
         {
             List<Log> ListLogs = new List<Log>();
+
             FirebaseResponse responsed = await Conexion.Cont().GetAsync(Environment.UserName + "/Logs");
             var conf = responsed.ResultAs<Dictionary<string, Log>>();
-            foreach (var item in conf)
+
+            foreach (KeyValuePair<string, Log> lo in conf.OrderBy(i => Int32.Parse(i.Key.Substring(3))))
             {
-                ListLogs.Add(new Log() { Mensaje = item.Value.ToString() });
+                ListLogs.Add(new Log() { Mensaje = lo.Value.ToString() });
             }
+            
 
             return ListLogs;
 
@@ -46,19 +48,9 @@ namespace CapitanKrik
         {
             FirebaseResponse responsed = await Conexion.Cont().GetAsync(Environment.UserName + "/Logs");
             var conf = responsed.ResultAs<Dictionary<string, Log>>();
-            int temp = 0;
-            foreach (var item in conf)
-            {
-                if (Int32.Parse(item.Key.Substring(3)) > temp)
-                {
-                    temp = Int32.Parse(item.Key.Substring(3));
-                }
-
-            }
-            temp++;
+            int temp = conf.Count()+1;
             await Conexion.Cont().SetAsync(Environment.UserName + "/Logs/Log" + temp + "/TipoLog", save.TipoLog);
             await Conexion.Cont().SetAsync(Environment.UserName + "/Logs/Log" + temp + "/Mensaje", save.Mensaje);
-            MainWindow.AddLogList(save);
         }
     }
 }

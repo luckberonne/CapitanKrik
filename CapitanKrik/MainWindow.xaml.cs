@@ -31,10 +31,12 @@ namespace CapitanKrik
             InitializeComponent();
             GetConfig();
 
-            Logs.Log eslog = new Logs.Log();
-            eslog.TipoLog = "ERROR";
-            eslog.Mensaje = "Mensaje de ";
-            Logs.SetLog(eslog);
+            Logs.Log eslog = new Logs.Log
+            {
+                TipoLog = "ERROR",
+                Mensaje = "Mensaje de ultimo 1"
+            };
+            AddLogList(eslog);
         }
 
 
@@ -93,6 +95,7 @@ namespace CapitanKrik
         public static void AddLogList(Logs.Log eslog)
         {
             ListLogs.Add(new Logs.Log() { Mensaje = eslog.ToString() });
+            Logs.SetLog(eslog);
         }
 
 
