@@ -43,7 +43,7 @@ namespace CapitanKrik
                 tt_subir.Visibility = Visibility.Collapsed;
                 tt_renombrar.Visibility = Visibility.Collapsed;
                 tt_backup.Visibility = Visibility.Collapsed;
-                tt_reiniciar.Visibility = Visibility.Collapsed;
+                tt_borrar.Visibility = Visibility.Collapsed;
                 tt_configuracion.Visibility = Visibility.Collapsed;
                 tt_log.Visibility = Visibility.Collapsed;
                 tt_cerrar.Visibility = Visibility.Collapsed;
@@ -53,7 +53,7 @@ namespace CapitanKrik
                 tt_subir.Visibility = Visibility.Visible;
                 tt_renombrar.Visibility = Visibility.Visible;
                 tt_backup.Visibility = Visibility.Visible;
-                tt_reiniciar.Visibility = Visibility.Visible;
+                tt_borrar.Visibility = Visibility.Visible;
                 tt_configuracion.Visibility = Visibility.Visible;
                 tt_log.Visibility = Visibility.Visible;
                 tt_cerrar.Visibility = Visibility.Visible;

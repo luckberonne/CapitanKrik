@@ -176,7 +176,7 @@
     <Resource Include="Assets\img_backup.png" />
     <Resource Include="Assets\img_configuracion.png" />
     <Resource Include="Assets\img_log.png" />
-    <Resource Include="Assets\img_reiniciar.png" />
+    <Resource Include="Assets\img_borrar.png" />
     <Resource Include="Assets\img_renombrar.png" />
     <Resource Include="Assets\img_subir.png" />
     <Resource Include="Assets\tgBtn_default.png" />

@@ -709,11 +709,11 @@
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="Assets/img_reiniciar.png"
+                                <Image Source="Assets/img_borrar.png"
                                        Stretch="None"
                                        Margin="10,0,0,0"/>
 
-                                <TextBlock Text="Reiniciar"
+                                <TextBlock Text="Eliminar"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
@@ -723,8 +723,8 @@
 
                             <ListViewItem.ToolTip>
 
-                                <ToolTip x:Name="tt_reiniciar"
-                                         Content="Reiniciar"
+                                <ToolTip x:Name="tt_borrar"
+                                         Content="Eliminar"
                                          Style="{StaticResource tt_style}"/>
 
                             </ListViewItem.ToolTip>
