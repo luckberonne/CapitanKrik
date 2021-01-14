@@ -17,6 +17,7 @@ using FireSharp.Config;
 using FireSharp.Response;
 using FireSharp;
 using Microsoft.Win32;
+using System.ComponentModel;
 
 namespace CapitanKrik
 {
@@ -31,14 +32,7 @@ namespace CapitanKrik
             InitializeComponent();
             GetConfig();
 
-            Logs.Log eslog = new Logs.Log
-            {
-                TipoLog = "ERROR",
-                Mensaje = "Mensaje de ultimo 1"
-            };
-            AddLogList(eslog);
         }
-
 
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -87,7 +81,7 @@ namespace CapitanKrik
         }
 
 
-        public List<Archivos.Archivo> ListArchivos { get; set; } = Task.Run(() => Archivos.GetListArchivos()).Result;
+        public BindingList<Archivos.Archivo> ListArchivos { get; set; } = Task.Run(() => Archivos.GetListArchivos()).Result;
 
 
         public static List<Logs.Log> ListLogs { get; set; } = Task.Run(() => Logs.GetLogItems()).Result;
@@ -159,6 +153,15 @@ namespace CapitanKrik
             {
                 CSubida.Text = ofd.SelectedPath;
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+                ListArchivos = Task.Run(() => Archivos.GetListArchivos()).Result;
+
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+
+                    ListArch.ItemsSource = null;
+                    ListArch.ItemsSource = ListArchivos;
+                }));
+                MainWindow_Loaded(sender, e);
             }
             TABS.Focus();
         }
@@ -187,6 +190,7 @@ namespace CapitanKrik
 
         private async void GetConfig()
         {
+            SliderCant.Minimum = 1;
             FirebaseResponse response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
             Configuracion.Confg con = response.ResultAs<Configuracion.Confg>();
 
@@ -212,6 +216,18 @@ namespace CapitanKrik
                     await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
                 }
 
+                if (con.CantidadArchivos != "null")
+                {
+                    value.Text = con.CantidadArchivos;
+                    SliderCant.Value = Int32.Parse(con.CantidadArchivos);
+                }
+                else
+                {
+                    value.Text = "1";
+                    SliderCant.Value = 1;
+                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
+                }
+
                 response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada");
                 if (response.Body != "null")
                 {
@@ -222,6 +238,7 @@ namespace CapitanKrik
                     Entrada.IsChecked = true;
                     await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
                 }
+
                 response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoSalida");
                 if (response.Body != "null")
                 {
@@ -232,13 +249,17 @@ namespace CapitanKrik
                     Salida.IsChecked = true;
                     await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
                 }
+
             }
+
             else
             {
                 CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
                 CBackup.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
+                value.Text = "1";
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
                 Entrada.IsChecked = true;
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
                 Salida.IsChecked = true;
@@ -255,7 +276,15 @@ namespace CapitanKrik
         private async void CSubida_LostFocus(object sender, RoutedEventArgs e)
         {
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
+            ListArchivos = Task.Run(() => Archivos.GetListArchivos()).Result;
 
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+
+                ListArch.ItemsSource = null;
+                ListArch.ItemsSource = ListArchivos;
+            }));
+            MainWindow_Loaded(sender, e);
         }
 
         private void CSubida_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -267,7 +296,68 @@ namespace CapitanKrik
             }
         }
 
-   
+        private async void SliderCant_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            int someInt = (int)e.NewValue;
+            string msg = String.Format("{0}", someInt);
+            SliderCant.Value = someInt;
+            this.value.Text = msg;
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
+        }
+
+        private void Value_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                TABS.Focus();
+                e.Handled = true;
+            }
+        }
+
+        private async void Value_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SliderCant.Value = Int32.Parse(value.Text);
+            await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
+        }
+
+        
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            FirebaseResponse response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/CarpetaSubida");
+            string con = response.ResultAs<string>();
+            FileSystemWatcher fsw = new FileSystemWatcher(con)
+            {
+                NotifyFilter = NotifyFilters.Attributes |
+                                NotifyFilters.CreationTime |
+                                NotifyFilters.FileName |
+                                NotifyFilters.LastAccess |
+                                NotifyFilters.LastWrite |
+                                NotifyFilters.Size |
+                                NotifyFilters.Security,
+
+                IncludeSubdirectories = true,
+                EnableRaisingEvents = true
+            };
+
+            fsw.Changed += new FileSystemEventHandler(Fsw_Changed);
+            fsw.Created += new FileSystemEventHandler(Fsw_Changed);
+            fsw.Deleted += new FileSystemEventHandler(Fsw_Changed);
+            fsw.Renamed += new RenamedEventHandler(Fsw_Changed);
+
+        }
+
+        private void Fsw_Changed(object sender, FileSystemEventArgs e)
+        {
+
+            ListArchivos = Task.Run(() => Archivos.GetListArchivos()).Result;
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+
+                ListArch.ItemsSource = null;
+                ListArch.ItemsSource = ListArchivos;
+            }));
+        }
+        
     }
 
 

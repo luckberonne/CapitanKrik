@@ -11,7 +11,9 @@
         ResizeMode="NoResize"
         Topmost="True"
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen" Icon="ancla.png">
+        WindowStartupLocation="CenterScreen" 
+        Icon="ancla.png"
+        Loaded="MainWindow_Loaded">
 
     <Window.Resources>
 
@@ -217,6 +219,80 @@
             </Setter>
         </Style>
 
+
+        <SolidColorBrush x:Key="HorizontalSliderTrackNormalBackground" Color="LightGray"/>
+        <LinearGradientBrush x:Key="HorizontalSliderTrackNormalBorder" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"/>
+            <GradientStop Color="#757575" Offset=".9"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="SliderRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Rectangle Fill="Transparent"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomThumbForSlider" TargetType="{x:Type Thumb}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Ellipse Fill="#20BF55" Stroke="#FF000000" Height="30" Width="30"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MyCustomStyleForSlider" TargetType="{x:Type Slider}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TickBar x:Name="TopTick" Visibility="Visible" Fill="White" Placement="Top" Height="8" Grid.Row="0"/>
+                                <TickBar x:Name="BottomTick" Visibility="Visible" Fill="White" Placement="Bottom" Height="8" Grid.Row="0"/>
+                                <Border x:Name="TrackBackground" 
+                                        Background="{StaticResource HorizontalSliderTrackNormalBackground}"
+                                        BorderBrush="{StaticResource HorizontalSliderTrackNormalBorder}"
+                                        BorderThickness="1" CornerRadius="1"
+                                        Margin="5,0" VerticalAlignment="Center" Height="10" Grid.Row="1" >
+                                    <Canvas Margin="-6,-1">
+                                        <Rectangle Visibility="Hidden" x:Name="PART_SelectionRange" Height="4.0"
+                                                   Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                                                   Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
+                                                   StrokeThickness="1.0"/>
+                                    </Canvas>
+                                </Border>
+                                <Track x:Name="PART_Track" Grid.Row="1">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}" Command="{x:Static Slider.DecreaseLarge}"/>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}" Command="{x:Static Slider.IncreaseLarge}"/>
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb x:Name="Thumb" Style="{StaticResource CustomThumbForSlider}" Background="Black"/>
+                                    </Track.Thumb>
+                                </Track>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
 
     <Window.DataContext>
@@ -277,6 +353,8 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -291,6 +369,7 @@
 
                             <CheckBox x:Name="Salida" Grid.Row="0" Click="Salida_Click" Grid.Column="1" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" Margin="0,25,0,0" >Salida</CheckBox>
 
+
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="170*"/>
@@ -301,29 +380,20 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <Label Foreground="White" Grid.ColumnSpan="2" Margin="25,0,0,0" FontSize="24">
-                                    Carpeta de Subida
+                                    Cantidad de archivos repetidos
                                 </Label>
+                                <Slider x:Name="SliderCant" Margin="25,0,0,0"  Minimum="0" Maximum="15" Grid.Row="1" ValueChanged="SliderCant_ValueChanged" Style="{StaticResource MyCustomStyleForSlider}" VerticalAlignment="Center">
 
-                                <TextBox x:Name="CSubida" Grid.Column="0" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CSubida_LostFocus" Grid.Row="1" TextWrapping="NoWrap" Margin="25,0,0,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
-                                    <TextBox.Text>
-                                        C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos
-                                    </TextBox.Text>
+                                </Slider>
+                                <TextBox x:Name="value" Grid.Column="1" Padding="5,0,5,0"  PreviewKeyDown="Value_PreviewKeyDown" LostFocus="Value_LostFocus" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="10,0,25,0" Grid.Row="1" TextWrapping="Wrap" Text="1" Background="#3FFFFFFF" Foreground="White" FontSize="14" MinWidth="30" MinHeight="30" VerticalAlignment="Center">
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
-                                            <Setter Property="CornerRadius" Value="5, 0, 0, 5"/>
+                                            <Setter Property="CornerRadius" Value="5, 5, 5, 5"/>
                                         </Style>
                                     </TextBox.Resources>
                                 </TextBox>
-                                <Button x:Name="Scarpeta" Grid.Column="1" Click="CSubida_GotFocus" Grid.Row="1" Margin="0,25,25,75" Height="40" Background="#3FFFFFFF" BorderBrush="#FFABADB3">
-                                    <TextBlock Foreground="White"  FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Height="99">
-                            ...
-                                    </TextBlock>
-                                    <Button.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="0,5,5,0"/>
-                                        </Style>
-                                    </Button.Resources>
-                                </Button>
+
+
                             </Grid>
 
                             <Grid Grid.Row="2" Grid.ColumnSpan="2">
@@ -336,20 +406,55 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <Label Foreground="White" Grid.ColumnSpan="2" Margin="25,0,0,0" FontSize="24">
-                                    Carpeta de BackUPs
+                                    Carpeta de Subida
                                 </Label>
 
-                                <TextBox x:Name="CBackup" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CBackup_LostFocus" Grid.Row="2" TextWrapping="NoWrap" Margin="25,0,0,50" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40">
+                                <TextBox x:Name="CSubida" Grid.Column="0" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CSubida_LostFocus" Grid.Row="1" TextWrapping="NoWrap" Margin="25,20,0,0" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40" VerticalAlignment="Top">
+                                    <TextBox.Text>
+                                        C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos
+                                    </TextBox.Text>
+                                    <TextBox.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="5, 0, 0, 5"/>
+                                        </Style> 
+                                    </TextBox.Resources>
+                                </TextBox>
+                                <Button x:Name="Scarpeta" Grid.Column="1" Click="CSubida_GotFocus" Grid.Row="1" Margin="0,20,25,0" Background="#3FFFFFFF" BorderBrush="#FFABADB3" Height="40" VerticalAlignment="Top">
+                                    <TextBlock Foreground="White"  FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Height="99">
+                            ...
+                                    </TextBlock>
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="0,5,5,0"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </Grid>
+
+                            <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="170*"/>
+                                    <ColumnDefinition Width="37*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Label Foreground="White" Grid.ColumnSpan="2" Margin="25,0,0,0" FontSize="24">
+                                    Carpeta de BackUPs  
+                                </Label>
+
+                                <TextBox x:Name="CBackup" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CBackup_LostFocus" Grid.Row="2" TextWrapping="NoWrap" Margin="25,20,0,0" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40" VerticalAlignment="Top">
                                     <TextBox.Text>
                                         "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS"
                                     </TextBox.Text>
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5, 0, 0, 5"/>
-                                        </Style>
+                                        </Style> 
                                     </TextBox.Resources>
                                 </TextBox>
-                                <Button x:Name="Bcarpeta" Click="CBackup_GotFocus" Grid.Column="1" Grid.Row="1" Margin="0,25,25,75" Height="40" Background="#3FFFFFFF" BorderBrush="#FFABADB3">
+                                <Button x:Name="Bcarpeta" Grid.Column="1" Click="CBackup_GotFocus" Grid.Row="1" Margin="0,20,25,0" Height="40" Background="#3FFFFFFF" BorderBrush="#FFABADB3" VerticalAlignment="Top">
                                     <TextBlock Foreground="White"  FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Height="99">
                             ...
                                     </TextBlock>
@@ -361,8 +466,14 @@
                                 </Button>
 
                             </Grid>
+
+                            <Label Content="Lucas Ariel Beronne" Grid.Row="4" Foreground="White" Margin="25,0,0,10" Cursor="None" FontFamily="Yu Gothic UI Semibold" FontSize="14"/>
+                            <Label Content="V~3.18.03-GUI" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,0,25,10" Foreground="White" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" FontSize="14"/>
+
+
                         </Grid>
                     </TabItem>
+                    <DocumentViewer Height="100" Width="100"/>
 
                     <TabControl.ItemContainerStyle>
                         <Style TargetType="{x:Type TabItem}">

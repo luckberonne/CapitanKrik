@@ -8,6 +8,7 @@ using FireSharp.Config;
 using FireSharp.Response;
 using FireSharp;
 using System.IO;
+using System.ComponentModel;
 
 namespace CapitanKrik
 {
@@ -28,9 +29,9 @@ namespace CapitanKrik
         }
 
 
-        public static async Task<List<Archivo>> GetListArchivos()
+        public static async Task<BindingList<Archivo>> GetListArchivos()
         {
-            List<Archivo> ListArchivos = new List<Archivo>();
+            BindingList<Archivo> ListArchivos = new BindingList<Archivo>();
             FirebaseResponse responsed = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
             Configuracion.Confg conf = responsed.ResultAs<Configuracion.Confg>();
 
