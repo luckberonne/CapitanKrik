@@ -30,8 +30,9 @@ namespace CapitanKrik
         public MainWindow()
         {
             InitializeComponent();
-            GetConfig();
+            CargarConfig();
 
+            Archivos.Elegir();
         }
 
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
@@ -81,10 +82,53 @@ namespace CapitanKrik
         }
 
 
-        public BindingList<Archivos.Archivo> ListArchivos { get; set; } = Task.Run(() => Archivos.GetListArchivos()).Result;
+        public static Configuracion.Config TempConf { get; set; } = Task.Run(() => Configuracion.GetConfig()).Result;
 
+        public static BindingList<Archivos.Archivo> ListArchivos { get; set; } = Archivos.GetListArchivos();
 
         public static List<Logs.Log> ListLogs { get; set; } = Task.Run(() => Logs.GetLogItems()).Result;
+
+
+        public void GetListSelected()
+        {
+            if (ListArch.SelectedItems.Count > 0)
+            {
+                foreach (var item in ListArch.SelectedItems)
+                {
+                    foreach (var arch in ListArchivos)
+                    {
+                        if (arch.NombreArchivo == item.ToString())
+                        {
+                            arch.IsChecked = true;
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var arch in ListArchivos)
+                {
+                    arch.IsChecked = true;
+                }
+            }
+
+        }
+
+        public void LimpiarSelected()
+        {
+            ListArch.SelectedIndex = -1;
+            foreach (var arch in ListArchivos)
+            {
+                arch.IsChecked = false;
+            }
+        } 
+
+
+        public void CargarConfig()
+        {
+            SliderCant.Minimum = 1;
+        }
 
         public static void AddLogList(Logs.Log eslog)
         {
@@ -188,86 +232,6 @@ namespace CapitanKrik
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
         }
 
-        private async void GetConfig()
-        {
-            SliderCant.Minimum = 1;
-            FirebaseResponse response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
-            Configuracion.Confg con = response.ResultAs<Configuracion.Confg>();
-
-            if (con != null)
-            {
-                if (con.CarpetaSubida != "null")
-                {
-                    CSubida.Text = con.CarpetaSubida;
-                }
-                else
-                {
-                    CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
-                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
-                }
-
-                if (con.CarpetaBackUP != "null")
-                {
-                    CBackup.Text = con.CarpetaBackUP;
-                }
-                else
-                {
-                    CBackup.Text = "C:\\Users\\My - PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
-                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
-                }
-
-                if (con.CantidadArchivos != "null")
-                {
-                    value.Text = con.CantidadArchivos;
-                    SliderCant.Value = Int32.Parse(con.CantidadArchivos);
-                }
-                else
-                {
-                    value.Text = "1";
-                    SliderCant.Value = 1;
-                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
-                }
-
-                response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada");
-                if (response.Body != "null")
-                {
-                    Entrada.IsChecked = con.ProcesoEntrada;
-                }
-                else
-                {
-                    Entrada.IsChecked = true;
-                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
-                }
-
-                response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion/ProcesoSalida");
-                if (response.Body != "null")
-                {
-                    Salida.IsChecked = con.ProcesoSalida;
-                }
-                else
-                {
-                    Salida.IsChecked = true;
-                    await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
-                }
-
-            }
-
-            else
-            {
-                CSubida.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos";
-                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaSubida", CSubida.Text);
-                CBackup.Text = "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS";
-                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
-                value.Text = "1";
-                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
-                Entrada.IsChecked = true;
-                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
-                Salida.IsChecked = true;
-                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
-            }
-
-        }
-
         private async void CBackup_LostFocus(object sender, RoutedEventArgs e)
         {
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CarpetaBackUP", CBackup.Text);
@@ -355,9 +319,38 @@ namespace CapitanKrik
 
                 ListArch.ItemsSource = null;
                 ListArch.ItemsSource = ListArchivos;
+
+                Archivos.Elegir();
             }));
         }
-        
+
+        private void BtnSubir_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            GetListSelected();
+            Archivos.Subir();
+            LimpiarSelected();
+        }
+
+        private void Borrar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            GetListSelected();
+            Archivos.Delete();
+        }
+
+        private void Renombrar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            GetListSelected();
+            Archivos.Renombrar();
+
+        }
+
+        private void BackUp_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            GetListSelected();
+            Archivos.BackUp();
+
+            LimpiarSelected();
+        }
     }
 
 

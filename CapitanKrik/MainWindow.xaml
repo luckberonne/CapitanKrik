@@ -13,7 +13,7 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen" 
         Icon="ancla.png"
-        Loaded="MainWindow_Loaded">
+        Loaded="MainWindow_Loaded" >
 
     <Window.Resources>
 
@@ -365,9 +365,9 @@
                                 Procesos
                             </Label>
 
-                            <CheckBox x:Name="Entrada" Grid.Row="0" Click="Entrada_Click" Grid.Column="0" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" Margin="0,25,0,0" >Entrada</CheckBox>
+                            <CheckBox x:Name="Entrada" Grid.Row="0" IsChecked="{Binding TempConf.ProcesoEntrada}" Click="Entrada_Click" Grid.Column="0" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" Margin="0,25,0,0" >Entrada</CheckBox>
 
-                            <CheckBox x:Name="Salida" Grid.Row="0" Click="Salida_Click" Grid.Column="1" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" IsChecked="True" Margin="0,25,0,0" >Salida</CheckBox>
+                            <CheckBox x:Name="Salida" Grid.Row="0" IsChecked="{Binding TempConf.ProcesoSalida}" Click="Salida_Click" Grid.Column="1" Style="{StaticResource tb_check}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Foreground="White" Margin="0,25,0,0" >Salida</CheckBox>
 
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -385,7 +385,7 @@
                                 <Slider x:Name="SliderCant" Margin="25,0,0,0"  Minimum="0" Maximum="15" Grid.Row="1" ValueChanged="SliderCant_ValueChanged" Style="{StaticResource MyCustomStyleForSlider}" VerticalAlignment="Center">
 
                                 </Slider>
-                                <TextBox x:Name="value" Grid.Column="1" Padding="5,0,5,0"  PreviewKeyDown="Value_PreviewKeyDown" LostFocus="Value_LostFocus" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="10,0,25,0" Grid.Row="1" TextWrapping="Wrap" Text="1" Background="#3FFFFFFF" Foreground="White" FontSize="14" MinWidth="30" MinHeight="30" VerticalAlignment="Center">
+                                <TextBox x:Name="value" Text="{Binding TempConf.CantidadArchivos}"  Grid.Column="1" Padding="5,0,5,0"  PreviewKeyDown="Value_PreviewKeyDown" LostFocus="Value_LostFocus" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="10,0,25,0" Grid.Row="1" TextWrapping="Wrap" Background="#3FFFFFFF" Foreground="White" FontSize="14" MinWidth="30" MinHeight="30" VerticalAlignment="Center">
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5, 5, 5, 5"/>
@@ -409,10 +409,7 @@
                                     Carpeta de Subida
                                 </Label>
 
-                                <TextBox x:Name="CSubida" Grid.Column="0" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CSubida_LostFocus" Grid.Row="1" TextWrapping="NoWrap" Margin="25,20,0,0" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40" VerticalAlignment="Top">
-                                    <TextBox.Text>
-                                        C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Archivos
-                                    </TextBox.Text>
+                                <TextBox x:Name="CSubida" Text="{Binding TempConf.CarpetaSubida}" Grid.Column="0" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CSubida_LostFocus" Grid.Row="1" TextWrapping="NoWrap" Margin="25,20,0,0" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40" VerticalAlignment="Top">
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5, 0, 0, 5"/>
@@ -444,10 +441,7 @@
                                     Carpeta de BackUPs  
                                 </Label>
 
-                                <TextBox x:Name="CBackup" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CBackup_LostFocus" Grid.Row="2" TextWrapping="NoWrap" Margin="25,20,0,0" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40" VerticalAlignment="Top">
-                                    <TextBox.Text>
-                                        "C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\BackUPS"
-                                    </TextBox.Text>
+                                <TextBox x:Name="CBackup" Text="{Binding TempConf.CarpetaBackUP}" AcceptsReturn="False" PreviewKeyDown="CSubida_PreviewKeyDown" LostFocus="CBackup_LostFocus" Grid.Row="2" TextWrapping="NoWrap" Margin="25,20,0,0" Padding="5,0,5,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Background="#7F444141" Foreground="White" FontSize="18" Height="40" VerticalAlignment="Top">
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="5, 0, 0, 5"/>
@@ -610,8 +604,8 @@
 
                         <!--// Subir //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter">
+                        <ListViewItem x:Name="BtnSubir" HorizontalAlignment="Left"
+                                      Margin="0,0,0,15" MouseLeftButtonUp="BtnSubir_MouseDown" MouseEnter="ListViewItem_MouseEnter">
 
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
@@ -640,8 +634,8 @@
 
                         <!--// Renombrar //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
+                        <ListViewItem x:Name="Renombrar" HorizontalAlignment="Left"
+                                      Margin="0,0,0,15" MouseLeftButtonUp="Renombrar_MouseLeftButtonUp" MouseEnter="ListViewItem_MouseEnter"
                                       >
 
                             <StackPanel Orientation="Horizontal"
@@ -671,8 +665,8 @@
 
                         <!--// BackUP //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
+                        <ListViewItem x:Name="BackUp" HorizontalAlignment="Left"
+                                      Margin="0,0,0,15" MouseLeftButtonUp="BackUp_MouseLeftButtonUp" MouseEnter="ListViewItem_MouseEnter"
                                       >
 
                             <StackPanel Orientation="Horizontal"
@@ -702,8 +696,8 @@
 
                         <!--// Maps //-->
 
-                        <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
+                        <ListViewItem x:Name="Borrar" HorizontalAlignment="Left"
+                                      Margin="0,0,0,15" MouseLeftButtonUp="Borrar_MouseLeftButtonUp" MouseEnter="ListViewItem_MouseEnter"
                                       >
 
                             <StackPanel Orientation="Horizontal"

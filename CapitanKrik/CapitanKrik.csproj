@@ -133,6 +133,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Archivos.cs" />
+    <Compile Include="ArchivoTXT.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="Configuracion.cs" />
     <Compile Include="Logs.cs" />

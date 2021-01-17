@@ -34,10 +34,14 @@ namespace CapitanKrik
             FirebaseResponse responsed = await Conexion.Cont().GetAsync(Environment.UserName + "/Logs");
             var conf = responsed.ResultAs<Dictionary<string, Log>>();
 
-            foreach (KeyValuePair<string, Log> lo in conf.OrderBy(i => Int32.Parse(i.Key.Substring(3))))
+            if (conf != null)
             {
-                ListLogs.Add(new Log() { Mensaje = lo.Value.ToString() });
+                foreach (KeyValuePair<string, Log> lo in conf.OrderBy(i => Int32.Parse(i.Key.Substring(3))))
+                {
+                    ListLogs.Add(new Log() { Mensaje = lo.Value.ToString() });
+                }
             }
+
             
 
             return ListLogs;
