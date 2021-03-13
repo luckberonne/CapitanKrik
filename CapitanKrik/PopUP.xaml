@@ -1,0 +1,130 @@
+﻿<Window x:Class="CapitanKrik.PopUP"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CapitanKrik"
+        mc:Ignorable="d"
+        Title="PopUP" Height="120" Width="200"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen" >
+
+
+    <Window.Resources>
+
+
+        <ImageBrush x:Key="CloseBtn_MouseOver" ImageSource="Assets/closeBtn_MouseOver.png"/>
+
+        <Style x:Key="Closen" TargetType="{x:Type ToggleButton}">
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+
+                        <Border x:Name="button"
+                                BorderThickness="0"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+
+                                <Setter Property="Background"
+                                        TargetName="button"
+                                        Value="{StaticResource CloseBtn_MouseOver}"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+
+        <Style x:Key="Close" TargetType="{x:Type ToggleButton}">
+
+            <Setter Property="Template">
+
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+
+                        <Border x:Name="button"
+                                BorderThickness="0"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+
+                                <Setter Property="Background"
+                                        TargetName="button"
+                                        Value="{StaticResource CloseBtn_MouseOver}"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+
+            </Setter>
+
+        </Style>
+
+
+
+
+    </Window.Resources>
+
+    <Grid Background="#FF131313">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#FF131313" MouseLeftButtonDown="Nav_pnl_MouseLeftButtonDown">
+            <ToggleButton x:Name="CloseBtn"
+                                      HorizontalAlignment="Left"
+                                      Margin="180,0,0,0"
+                                      Width="20"
+                                      BorderThickness="0"
+                                      Style="{StaticResource Close}" Click="CloseBtn_Click" RenderTransformOrigin="6.2,0.178">
+
+
+                <ToggleButton.Background>
+
+                    <ImageBrush ImageSource="Assets/closeBtn_default.png"/>
+
+                </ToggleButton.Background>
+            </ToggleButton>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" Text="Información" VerticalAlignment="Top" Height="20" Width="165" Foreground="White" Margin="10,0,0,0"/>
+        </Grid>
+        <Grid Grid.Row="1" Background="#FF191919" MouseLeftButtonDown="Nav_pnl_MouseLeftButtonDown">
+            <Label HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Height="80" Width="180" Foreground="White">
+                <Label.Content>
+                    <AccessText TextWrapping="WrapWithOverflow" Text="Usted subio los archivos seleccionados a la carpeta destino"/>
+                </Label.Content>
+            </Label>
+        </Grid>
+
+    </Grid>
+
+</Window>

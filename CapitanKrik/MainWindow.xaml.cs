@@ -31,7 +31,7 @@ namespace CapitanKrik
         {
             InitializeComponent();
             CargarConfig();
-
+            
             Archivos.Elegir();
         }
 
@@ -184,6 +184,8 @@ namespace CapitanKrik
         {
             if (e.ClickCount == 2)
             {
+                this.MaxHeight = SystemParameters.WorkArea.Height;
+
                 this.WindowState = (this.WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
             }
         }
@@ -329,6 +331,9 @@ namespace CapitanKrik
             GetListSelected();
             Archivos.Subir();
             LimpiarSelected();
+
+            PopUP w = new PopUP() { Owner = this };
+            w.ShowDialog();
         }
 
         private void Borrar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -350,6 +355,19 @@ namespace CapitanKrik
             Archivos.BackUp();
 
             LimpiarSelected();
+        }
+
+        private void ListArch_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                foreach (var item in files)
+                {
+                    File.Copy(item, System.IO.Path.Combine(MainWindow.TempConf.CarpetaSubida, System.IO.Path.GetFileName(item)), true);
+                }
+            }
         }
     }
 

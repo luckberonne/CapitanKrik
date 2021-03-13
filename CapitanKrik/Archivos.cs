@@ -44,7 +44,7 @@ namespace CapitanKrik
 
             try
             {
-                allfiles = System.IO.Directory.GetFiles(MainWindow.TempConf.CarpetaSubida, "*.*", System.IO.SearchOption.AllDirectories);
+                allfiles = System.IO.Directory.GetFiles(MainWindow.TempConf.CarpetaSubida, "*.*", SearchOption.AllDirectories);
 
 
             }
@@ -98,6 +98,11 @@ namespace CapitanKrik
                 {
                     ArchivoTXT.MapearTXT(item);
                 }
+                else if (item.Contenido[0].Substring(0, 1) == "<")
+                {
+                    ArchivoXML.MapearXML(item);
+                    //el churrero de mar chiquita es caqntante
+                }
             }
         }
 
@@ -107,7 +112,7 @@ namespace CapitanKrik
             {
                 if (item.IsChecked)
                 {
-                    System.IO.File.Copy(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo), Path.Combine(item.CarpetaSubida, item.NombreArchivo));
+                    File.Copy(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo), Path.Combine(item.CarpetaSubida, item.NombreArchivo));
                 }
             }
         }
@@ -143,14 +148,14 @@ namespace CapitanKrik
             {
                 if (item.IsChecked)
                 {
-                    System.IO.File.Copy(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo), Path.Combine(MainWindow.TempConf.CarpetaBackUP, item.NombreArchivo));
+                    File.Copy(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo), Path.Combine(MainWindow.TempConf.CarpetaBackUP, item.NombreArchivo), true);
                 }
             }
         }
 
 
 
-        public static void procesos()
+        public static void Procesos()
         {
             int temp = 0;
             if (MainWindow.TempConf.ProcesoEntrada)

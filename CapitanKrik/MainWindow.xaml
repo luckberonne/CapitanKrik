@@ -9,7 +9,6 @@
         Height="600" 
         Width="500"
         ResizeMode="NoResize"
-        Topmost="True"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen" 
         Icon="ancla.png"
@@ -323,7 +322,7 @@
             <Grid Margin="70,10,10,10" >
                 <TabControl x:Name="TABS" Background="{x:Null}">
                     <TabItem x:Name="TabAchivos">
-                        <ListBox x:Name="ListArch" Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" SelectionMode="Multiple" ItemsSource="{Binding ListArchivos}" BorderBrush="{x:Null}">
+                        <ListBox AllowDrop="True" Drop="ListArch_Drop" x:Name="ListArch" Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" SelectionMode="Multiple" ItemsSource="{Binding ListArchivos}" BorderBrush="{x:Null}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Style="{StaticResource tb_text}" Text="{Binding NombreArchivo}">
