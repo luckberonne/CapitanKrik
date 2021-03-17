@@ -25,7 +25,6 @@ namespace CapitanKrik
             public string CarpetaSubida { get; set; }
 
             public bool IsChecked { get; set; }
-            public List<string> Contenido { get; set; }
 
 
             public override string ToString()
@@ -71,38 +70,40 @@ namespace CapitanKrik
 
 
 
-        public static BindingList<Archivo> Leer()
+        public static List<string> Leer(Archivo item)
         {
             string line;
-            foreach (var item in MainWindow.ListArchivos)
-            {
-                FileInfo info = new FileInfo(item.NombreArchivoViejo);
-                System.IO.StreamReader file = new System.IO.StreamReader(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivoViejo));
-                item.Contenido = new List<string>();
+            StreamReader file = new StreamReader(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo));
+                List<string> contenido = new List<string>();
                 while ((line = file.ReadLine()) != null)
                 {
-
-                    item.Contenido.Add(line);
+                    contenido.Add(line);
                 }
                 file.Close();
 
-            }
-            return MainWindow.ListArchivos;
+            return contenido;
         }
 
         public static void Elegir()
         {
-            foreach (var item in Archivos.Leer())
+            foreach (var item in MainWindow.ListArchivos)
             {
-                if(int.TryParse(item.Contenido[0].Substring(0, 3), out _))
+                if (item.IsChecked)
                 {
-                    ArchivoTXT.MapearTXT(item);
+                    StreamReader file = new StreamReader(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo));
+
+                    if (int.TryParse(file.ReadLine().Substring(0, 3), out _))
+                    {
+                        ArchivoTXT.MapearTXT(item);
+                    }
+                    else if (file.ReadLine().Substring(0, 1) == "<")
+                    {
+                        ArchivoXML.MapearXML(item);
+                    }
+
+                    file.Close();
                 }
-                else if (item.Contenido[0].Substring(0, 1) == "<")
-                {
-                    ArchivoXML.MapearXML(item);
-                    //el churrero de mar chiquita es caqntante
-                }
+
             }
         }
 
@@ -112,7 +113,7 @@ namespace CapitanKrik
             {
                 if (item.IsChecked)
                 {
-                    File.Copy(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo), Path.Combine(item.CarpetaSubida, item.NombreArchivo));
+                    File.Copy(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo), Path.Combine(item.CarpetaSubida, item.NombreArchivo), true);
                 }
             }
         }
@@ -124,7 +125,7 @@ namespace CapitanKrik
                 if (item.IsChecked)
                 {
                     item.NombreArchivo = item.TipoDocumento + "_" + item.Emisor + "_" + item.Receptor + "_" + item.NumeroDocumento + item.Extension;
-                    System.IO.File.Move(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivoViejo), Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo));
+                    File.Move(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivoViejo), Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo));
                 }
             }
         }

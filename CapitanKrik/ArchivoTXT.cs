@@ -12,7 +12,7 @@ namespace CapitanKrik
         {
 
             item.Extension = ".txt";
-            foreach (var line in item.Contenido)
+            foreach (var line in Archivos.Leer(item))
             {
                 if (line.Substring(0, 3) == "010")
                 {
@@ -33,7 +33,6 @@ namespace CapitanKrik
 
                     Conexion.Consulta(item);
                     Conexion.ConsultaCarp(item);
-                    item.Contenido = null;
 
                     break;
                 }

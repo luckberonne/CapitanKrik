@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CapitanKrik"
         mc:Ignorable="d"
-        Title="PopUP" Height="120" Width="200"
+        Title="PopUP" Height="200" Width="250"
         ResizeMode="NoResize"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen" >
@@ -96,15 +96,16 @@
 
     <Grid Background="#FF131313">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="#FF131313" MouseLeftButtonDown="Nav_pnl_MouseLeftButtonDown">
             <ToggleButton x:Name="CloseBtn"
                                       HorizontalAlignment="Left"
-                                      Margin="180,0,0,0"
-                                      Width="20"
+                                      Margin="215,2.5,5,2.5"
+                                      Width="30"
                                       BorderThickness="0"
                                       Style="{StaticResource Close}" Click="CloseBtn_Click" RenderTransformOrigin="6.2,0.178">
 
@@ -115,16 +116,32 @@
 
                 </ToggleButton.Background>
             </ToggleButton>
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Left" Text="Información" VerticalAlignment="Top" Height="20" Width="165" Foreground="White" Margin="10,0,0,0"/>
+            <Label HorizontalAlignment="Center" Padding="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Margin="10,2,48,0" VerticalAlignment="Top" Height="30" Width="192" Foreground="White" FontStyle="Italic" FontWeight="Bold">
+                <Label.Content>
+                    <AccessText TextWrapping="WrapWithOverflow" Text="Información" Height="62" FontSize="16"/>
+                </Label.Content>
+            </Label>
         </Grid>
         <Grid Grid.Row="1" Background="#FF191919" MouseLeftButtonDown="Nav_pnl_MouseLeftButtonDown">
-            <Label HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Height="80" Width="180" Foreground="White">
+            <Label HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Height="80" Width="230" Foreground="White">
                 <Label.Content>
-                    <AccessText TextWrapping="WrapWithOverflow" Text="Usted subio los archivos seleccionados a la carpeta destino"/>
+                    <AccessText TextWrapping="WrapWithOverflow" Text="Usted subio los archivos seleccionados a la carpeta destino" FontSize="14"/>
                 </Label.Content>
             </Label>
         </Grid>
 
+        <Grid Grid.Row="3">
+            <Button x:Name="Scarpeta" Background="#3FFFFFFF" Click="CloseBtn_Click" BorderBrush="#FFABADB3" Height="30" VerticalAlignment="Center" Margin="5,10">
+                <TextBlock Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Height="34" FontSize="20">
+                            Aceptar
+                </TextBlock>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5,5,5,5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
     </Grid>
 
 </Window>

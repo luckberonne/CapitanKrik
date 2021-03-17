@@ -22,7 +22,14 @@ namespace CapitanKrik
 
             item.Emisor = root.GetElementsByTagName("seller").Item(0).ChildNodes.Item(3).InnerText;
 
+            item.NumeroDocumento = root.GetElementsByTagName("invoiceIdentification").Item(0).ChildNodes.Item(0).InnerText;
+
+            item.TipoDocumento = root.GetElementsByTagName("pay:invoice").Item(0).ChildNodes.Item(4).InnerText;
+
+
             Conexion.Consulta(item);
+            Conexion.ConsultaCarp(item);
+
 
         }
     }

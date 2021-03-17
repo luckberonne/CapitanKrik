@@ -18,6 +18,10 @@ namespace CapitanKrik
         {
             public bool ProcesoEntrada { get; set; }
             public bool ProcesoSalida { get; set; }
+            public bool PopUps { get; set; }
+            public bool Eliminar { get; set; }
+            public bool BackUPs { get; set; }
+            public bool Renombrar { get; set; }
             public string CarpetaSubida { get; set; }
             public string CarpetaBackUP { get; set; }
             public string CantidadArchivos { get; set; }
@@ -36,6 +40,10 @@ namespace CapitanKrik
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", "1");
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", true);
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", true);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/PopUps", true);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Eliminar", false);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/BackUPs", false);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Renombrar", false);
                 response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
                 tempConf = response.ResultAs<Config>();
             }
