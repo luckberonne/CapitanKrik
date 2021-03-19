@@ -132,6 +132,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ArchivoEDI.cs" />
     <Compile Include="Archivos.cs" />
     <Compile Include="ArchivoXML.cs" />
     <Compile Include="ArchivoTXT.cs" />

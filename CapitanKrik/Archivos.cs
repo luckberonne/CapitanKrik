@@ -91,17 +91,23 @@ namespace CapitanKrik
                 if (item.IsChecked)
                 {
                     StreamReader file = new StreamReader(Path.Combine(MainWindow.TempConf.CarpetaSubida, item.NombreArchivo));
-
-                    if (int.TryParse(file.ReadLine().Substring(0, 3), out _))
+                    string line = file.ReadLine();
+                    if (line != null)
                     {
-                        ArchivoTXT.MapearTXT(item);
+                        if (int.TryParse(line.Substring(0, 3), out _))
+                        {
+                            ArchivoTXT.MapearTXT(item);
+                        }
+                        else if (line.Substring(0, 1) == "<")
+                        {
+                            ArchivoXML.MapearXML(item);
+                        }
+                        //else if (line.Substring(0, 2) == "UN")
+                        //{
+                        //    ArchivoEDI.MapearEDI(item);
+                        //}
+                        file.Close();
                     }
-                    else if (file.ReadLine().Substring(0, 1) == "<")
-                    {
-                        ArchivoXML.MapearXML(item);
-                    }
-
-                    file.Close();
                 }
 
             }
