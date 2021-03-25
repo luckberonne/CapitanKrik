@@ -18,6 +18,7 @@ using FireSharp.Response;
 using FireSharp;
 using Microsoft.Win32;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace CapitanKrik
 {
@@ -440,26 +441,15 @@ namespace CapitanKrik
         {
             if ("CN" == TempConf.Entorno)
             {
-                Image img = new Image();
-                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\qa.png"));
-                ImgEntorno.Source = img.Source;
-                TextEntorno.Content = "QA";
-                TEntorno.Text = "QA";
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Entorno", "QA");
                 TempConf.Entorno = "QA";
             }
             else
             {
-                Image img = new Image();
-                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\cn.png"));
-                ImgEntorno.Source = img.Source;
-                TextEntorno.Content = "Consultoria";
-                TEntorno.Text = "Consultoria";
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Entorno", "CN");
                 TempConf.Entorno = "CN";
-
             }
-
+            CambiarEntorno();
         }
 
         public void CambiarEntorno()
@@ -467,7 +457,7 @@ namespace CapitanKrik
             if (TempConf.Entorno == "CN")
             {
                 Image img = new Image();
-                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\cn.png"));
+                img.Source = new BitmapImage(new Uri("\\Assets\\cn.png", UriKind.Relative));
                 ImgEntorno.Source = img.Source;
                 TextEntorno.Content = "Consultoria";
                 TEntorno.Text = "Consultoria";
@@ -476,11 +466,19 @@ namespace CapitanKrik
             else if (TempConf.Entorno == "QA")
             {
                 Image img = new Image();
-                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\qa.png"));
+                img.Source = new BitmapImage(new Uri("\\Assets\\qa.png", UriKind.Relative));
                 ImgEntorno.Source = img.Source;
                 TextEntorno.Content = "QA";
                 TEntorno.Text = "QA";
                 TempConf.Entorno = "QA";
+            }
+        }
+
+        private void TextBlock_LeftDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount >= 2)
+            {
+                Process.Start((System.IO.Path.Combine(TempConf.CarpetaSubida, ((System.Windows.Controls.TextBlock)e.Source).Text.ToString())));
             }
         }
     }

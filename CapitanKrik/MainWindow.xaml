@@ -329,7 +329,7 @@
                         <ListBox AllowDrop="True" Drop="ListArch_Drop" x:Name="ListArch" Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" SelectionMode="Multiple" ItemsSource="{Binding ListArchivos}" BorderBrush="{x:Null}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Style="{StaticResource tb_text}" Text="{Binding NombreArchivo}">
+                                    <TextBlock Style="{StaticResource tb_text}" Text="{Binding NombreArchivo}" MouseDown="TextBlock_LeftDoubleClick">
 
                                     </TextBlock>
                                 </DataTemplate>
