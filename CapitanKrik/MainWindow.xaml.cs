@@ -18,6 +18,7 @@ using FireSharp.Response;
 using FireSharp;
 using Microsoft.Win32;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace CapitanKrik
 {
@@ -31,6 +32,7 @@ namespace CapitanKrik
         {
             InitializeComponent();
             CargarConfig();
+            CambiarEntorno();
         }
 
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
@@ -46,6 +48,7 @@ namespace CapitanKrik
                 tt_configuracion.Visibility = Visibility.Collapsed;
                 tt_log.Visibility = Visibility.Collapsed;
                 tt_cerrar.Visibility = Visibility.Collapsed;
+                TextEntorno.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -56,6 +59,7 @@ namespace CapitanKrik
                 tt_configuracion.Visibility = Visibility.Visible;
                 tt_log.Visibility = Visibility.Visible;
                 tt_cerrar.Visibility = Visibility.Visible;
+                TextEntorno.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -431,6 +435,51 @@ namespace CapitanKrik
         private async void BackUPs_Click(object sender, RoutedEventArgs e)
         {
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/BackUPs", BackUPs.IsChecked);
+        }
+
+        private async void Entorno_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if ("CN" == TempConf.Entorno)
+            {
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Entorno", "QA");
+                TempConf.Entorno = "QA";
+            }
+            else
+            {
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Entorno", "CN");
+                TempConf.Entorno = "CN";
+            }
+            CambiarEntorno();
+        }
+
+        public void CambiarEntorno()
+        {
+            if (TempConf.Entorno == "CN")
+            {
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri("\\Assets\\cn.png", UriKind.Relative));
+                ImgEntorno.Source = img.Source;
+                TextEntorno.Content = "Consultoria";
+                TEntorno.Text = "Consultoria";
+                TempConf.Entorno = "CN";
+            }
+            else if (TempConf.Entorno == "QA")
+            {
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri("\\Assets\\qa.png", UriKind.Relative));
+                ImgEntorno.Source = img.Source;
+                TextEntorno.Content = "QA";
+                TEntorno.Text = "QA";
+                TempConf.Entorno = "QA";
+            }
+        }
+
+        private void TextBlock_LeftDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount >= 2)
+            {
+                Process.Start((System.IO.Path.Combine(TempConf.CarpetaSubida, ((System.Windows.Controls.TextBlock)e.Source).Text.ToString())));
+            }
         }
     }
 

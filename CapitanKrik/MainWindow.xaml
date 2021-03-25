@@ -329,7 +329,7 @@
                         <ListBox AllowDrop="True" Drop="ListArch_Drop" x:Name="ListArch" Margin="0" VerticalContentAlignment="Top" Background="{x:Null}" SelectionMode="Multiple" ItemsSource="{Binding ListArchivos}" BorderBrush="{x:Null}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Style="{StaticResource tb_text}" Text="{Binding NombreArchivo}">
+                                    <TextBlock Style="{StaticResource tb_text}" Text="{Binding NombreArchivo}" MouseDown="TextBlock_LeftDoubleClick">
 
                                     </TextBlock>
                                 </DataTemplate>
@@ -648,7 +648,7 @@
                     <ListView  x:Name="LV"
                                Background="Transparent"
                                BorderBrush="Transparent"
-                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400">
+                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="469">
 
                         <!--// Subir //-->
 
@@ -836,6 +836,38 @@
                         </ListViewItem>
 
 
+                        <!--// Entorno //-->
+
+                        <ListViewItem x:Name="Entorno" HorizontalAlignment="Left"
+                                      Margin="0,0,0,15" MouseLeftButtonUp="Entorno_MouseLeftButtonUp" 
+                                      >
+
+                            <StackPanel Orientation="Horizontal"
+                                        Width="230">
+
+                                <Image x:Name="ImgEntorno"
+                                       Source="Assets/cn.png"
+                                       Stretch="None"
+                                       Margin="6,0,0,0"/>
+
+                                <TextBlock x:Name="TEntorno"
+                                           Text="Consultoria"
+                                           Margin="25,0,0,0"
+                                           Style="{StaticResource font_style}"/>
+
+                            </StackPanel>
+
+                            <!--// Tooltip //-->
+
+                            <ListViewItem.ToolTip>
+
+                                <ToolTip x:Name="TextEntorno"
+                                         Content="Consultoria"
+                                         Style="{StaticResource tt_style}"/>
+
+                            </ListViewItem.ToolTip>
+
+                        </ListViewItem>
 
                         <!--// Listview items style template //-->
 

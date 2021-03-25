@@ -22,6 +22,7 @@ namespace CapitanKrik
             public bool Eliminar { get; set; }
             public bool BackUPs { get; set; }
             public bool Renombrar { get; set; }
+            public string Entorno { get; set; }
             public string CarpetaSubida { get; set; }
             public string CarpetaBackUP { get; set; }
             public string CantidadArchivos { get; set; }
@@ -44,9 +45,11 @@ namespace CapitanKrik
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Eliminar", false);
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/BackUPs", false);
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Renombrar", false);
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Entorno", "CN");
                 response = await Conexion.Cont().GetAsync(Environment.UserName + "/Configuracion");
                 tempConf = response.ResultAs<Config>();
             }
+
             return tempConf;
         }
 
