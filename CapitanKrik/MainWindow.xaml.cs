@@ -31,6 +31,7 @@ namespace CapitanKrik
         {
             InitializeComponent();
             CargarConfig();
+            CambiarEntorno();
         }
 
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
@@ -46,6 +47,7 @@ namespace CapitanKrik
                 tt_configuracion.Visibility = Visibility.Collapsed;
                 tt_log.Visibility = Visibility.Collapsed;
                 tt_cerrar.Visibility = Visibility.Collapsed;
+                TextEntorno.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -56,6 +58,7 @@ namespace CapitanKrik
                 tt_configuracion.Visibility = Visibility.Visible;
                 tt_log.Visibility = Visibility.Visible;
                 tt_cerrar.Visibility = Visibility.Visible;
+                TextEntorno.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -431,6 +434,54 @@ namespace CapitanKrik
         private async void BackUPs_Click(object sender, RoutedEventArgs e)
         {
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/BackUPs", BackUPs.IsChecked);
+        }
+
+        private async void Entorno_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if ("CN" == TempConf.Entorno)
+            {
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\qa.png"));
+                ImgEntorno.Source = img.Source;
+                TextEntorno.Content = "QA";
+                TEntorno.Text = "QA";
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Entorno", "QA");
+                TempConf.Entorno = "QA";
+            }
+            else
+            {
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\cn.png"));
+                ImgEntorno.Source = img.Source;
+                TextEntorno.Content = "Consultoria";
+                TEntorno.Text = "Consultoria";
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/Entorno", "CN");
+                TempConf.Entorno = "CN";
+
+            }
+
+        }
+
+        public void CambiarEntorno()
+        {
+            if (TempConf.Entorno == "CN")
+            {
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\cn.png"));
+                ImgEntorno.Source = img.Source;
+                TextEntorno.Content = "Consultoria";
+                TEntorno.Text = "Consultoria";
+                TempConf.Entorno = "CN";
+            }
+            else if (TempConf.Entorno == "QA")
+            {
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri("C:\\Users\\My-PC\\source\\repos\\CapitanKrik\\CapitanKrik\\Assets\\qa.png"));
+                ImgEntorno.Source = img.Source;
+                TextEntorno.Content = "QA";
+                TEntorno.Text = "QA";
+                TempConf.Entorno = "QA";
+            }
         }
     }
 
