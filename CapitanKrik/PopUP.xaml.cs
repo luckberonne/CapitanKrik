@@ -19,10 +19,13 @@ namespace CapitanKrik
     /// </summary>
     public partial class PopUP : Window
     {
-        public PopUP()
+        public PopUP(string h, string t)
         {
             InitializeComponent();
+            Header.Text = h;
+            TextInfo.Text = t;
         }
+
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -34,5 +37,6 @@ namespace CapitanKrik
 
             this.DragMove();
         }
+
     }
 }

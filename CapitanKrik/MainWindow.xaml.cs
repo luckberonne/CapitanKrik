@@ -33,6 +33,7 @@ namespace CapitanKrik
             InitializeComponent();
             CargarConfig();
             CambiarEntorno();
+
         }
 
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
@@ -59,7 +60,7 @@ namespace CapitanKrik
                 tt_configuracion.Visibility = Visibility.Visible;
                 tt_log.Visibility = Visibility.Visible;
                 tt_cerrar.Visibility = Visibility.Visible;
-                TextEntorno.Visibility = Visibility.Collapsed;
+                TextEntorno.Visibility = Visibility.Visible;
             }
         }
 
@@ -222,11 +223,21 @@ namespace CapitanKrik
         private async void Entrada_Click(object sender, RoutedEventArgs e)
         {
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoEntrada", Entrada.IsChecked);
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Proximamente", "Esta función aún no esta disponible") { Owner = this };
+                w.ShowDialog();
+            }
         }
 
         private async void Salida_Click(object sender, RoutedEventArgs e)
         {
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/ProcesoSalida", Salida.IsChecked);
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Proximamente", "Esta función aún no esta disponible") { Owner = this };
+                w.ShowDialog();
+            }
         }
 
         private async void CBackup_LostFocus(object sender, RoutedEventArgs e)
@@ -264,6 +275,7 @@ namespace CapitanKrik
             SliderCant.Value = someInt;
             this.value.Text = msg;
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
+
         }
 
         private void Value_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -273,16 +285,28 @@ namespace CapitanKrik
                 TABS.Focus();
                 e.Handled = true;
             }
+
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Proximamente", "Esta función aún no esta disponible") { Owner = this };
+                w.ShowDialog();
+            }
         }
 
         private async void Value_LostFocus(object sender, RoutedEventArgs e)
         {
             SliderCant.Value = Int32.Parse(value.Text);
             await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/CantidadArchivos", value.Text);
+
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Proximamente", "Esta función aún no esta disponible") { Owner = this };
+                w.ShowDialog();
+            }
         }
 
         bool x = true;
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             FileSystemWatcher fsw = new FileSystemWatcher(TempConf.CarpetaSubida)
             {
@@ -303,6 +327,14 @@ namespace CapitanKrik
             fsw.Deleted += new FileSystemEventHandler(Fsw_Changed);
             fsw.Renamed += new RenamedEventHandler(Fsw_Changed);
 
+
+
+            if (TempConf.PrimeraVez)
+            {
+                PopUP w = new PopUP("Bienvenido", "CapitanKrik es un programa para facilitar la subida de documentos; \n \nCreada por Lucas Beronne");
+                w.ShowDialog();
+                await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/PrimeraVez", false);
+            }
         }
 
         private void Fsw_Changed(object sender, FileSystemEventArgs e)
@@ -355,12 +387,6 @@ namespace CapitanKrik
 
             Archivos.Subir();
 
-            if (TempConf.PopUps)
-            {
-                PopUP w = new PopUP() { Owner = this };
-                w.ShowDialog();
-            }
-
             if (TempConf.Eliminar)
             {
                 Archivos.Delete();
@@ -374,6 +400,12 @@ namespace CapitanKrik
             LimpiarSelected();
             x = true;
 
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Información", "Usted subio los archivos seleccionados a la carpeta destino") { Owner = this };
+                w.ShowDialog();
+            }
+
         }
 
         private void Borrar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -381,6 +413,12 @@ namespace CapitanKrik
             TABS.SelectedIndex = 0;
             GetListSelected();
             Archivos.Delete();
+
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Información", "Usted Borro los archivos seleccionados de la carpeta") { Owner = this };
+                w.ShowDialog();
+            }
         }
 
         private void Renombrar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -392,6 +430,12 @@ namespace CapitanKrik
             Archivos.Elegir();
             Archivos.Renombrar();
 
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Información", "Usted Renombro los archivos seleccionados de la carpeta") { Owner = this };
+                w.ShowDialog();
+            }
+
         }
 
         private void BackUp_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -402,6 +446,12 @@ namespace CapitanKrik
             Archivos.BackUp();
 
             LimpiarSelected();
+
+            if (TempConf.PopUps)
+            {
+                PopUP w = new PopUP("Información", "Usted hizo BackUP de los archivos seleccionados a la carpeta indicada") { Owner = this };
+                w.ShowDialog();
+            }
         }
 
         private void ListArch_Drop(object sender, DragEventArgs e)

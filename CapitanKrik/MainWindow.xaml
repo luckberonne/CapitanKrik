@@ -510,7 +510,7 @@
                             </Grid>
 
                             <Label Content="Lucas Ariel Beronne" Grid.Row="5" Foreground="White" Margin="25,10,0,0"/>
-                            <Label Content="V~3.18.03-GUI" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,10,25,0" Foreground="White" Width="88"/>
+                            <Label Content="V~3.24.03-GUI" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,10,25,0" Foreground="White" Width="88"/>
 
                         </Grid>
                     </TabItem>

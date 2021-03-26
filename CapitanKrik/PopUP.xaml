@@ -118,14 +118,14 @@
             </ToggleButton>
             <Label HorizontalAlignment="Center" Padding="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Margin="10,2,48,0" VerticalAlignment="Top" Height="30" Width="192" Foreground="White" FontStyle="Italic" FontWeight="Bold">
                 <Label.Content>
-                    <AccessText TextWrapping="WrapWithOverflow" Text="Información" Height="62" FontSize="16"/>
+                    <AccessText x:Name="Header" TextWrapping="WrapWithOverflow" Text="Información" Height="62" FontSize="16"/>
                 </Label.Content>
             </Label>
         </Grid>
         <Grid Grid.Row="1" Background="#FF191919" MouseLeftButtonDown="Nav_pnl_MouseLeftButtonDown">
-            <Label HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Height="80" Width="230" Foreground="White">
+            <Label HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="10,10,10,0" VerticalAlignment="Top" Height="95" Width="230" Foreground="White">
                 <Label.Content>
-                    <AccessText TextWrapping="WrapWithOverflow" Text="Usted subio los archivos seleccionados a la carpeta destino" FontSize="14"/>
+                    <AccessText x:Name="TextInfo" TextWrapping="WrapWithOverflow" Text="Usted subio los archivos seleccionados a la carpeta destino" FontSize="14"/>
                 </Label.Content>
             </Label>
         </Grid>
