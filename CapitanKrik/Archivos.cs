@@ -102,10 +102,10 @@ namespace CapitanKrik
                         {
                             ArchivoXML.MapearXML(item);
                         }
-                        //else if (line.Substring(0, 2) == "UN")
-                        //{
-                        //    ArchivoEDI.MapearEDI(item);
-                        //}
+                        else if (line.Substring(0, 2) == "UN")
+                        {
+                            ArchivoEDI.MapearEDI(item);
+                        }
                         file.Close();
                     }
                 }

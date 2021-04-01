@@ -331,7 +331,7 @@ namespace CapitanKrik
 
             if (TempConf.PrimeraVez)
             {
-                PopUP w = new PopUP("Bienvenido", "CapitanKrik es un programa para facilitar la subida de documentos; \n \nCreada por Lucas Beronne");
+                PopUP w = new PopUP("Bienvenido", "CapitanKrik es un programa para facilitar la subida de documentos; \n \nCreado por Lucas Beronne");
                 w.ShowDialog();
                 await Conexion.Cont().SetAsync(Environment.UserName + "/Configuracion/PrimeraVez", false);
             }
